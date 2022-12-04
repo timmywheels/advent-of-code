@@ -103,23 +103,6 @@ enum Outcomes {
     WIN = 6,
 }
 
-// impl AddAssign for Outcomes {
-//     fn add_assign(&mut self, rhs: Self) {
-//         match self {
-//             Outcomes::LOSE => {
-//                 println!("{}", self)
-//             }
-//             Outcomes::DRAW => {}
-//             Outcomes::WIN => {}
-//         }
-//         match rhs {
-//             Outcomes::LOSE => self += Outcomes::LOSE as u8,
-//             Outcomes::DRAW => self += Outcomes::DRAW as u8,
-//             Outcomes::WIN => self += Outcomes::WIN as u8,
-//         }
-//     }
-// }
-
 impl FromStr for MyChoices {
     type Err = ();
     fn from_str(s: &str) -> Result<Self, Self::Err> {

@@ -1,18 +1,14 @@
 use std::collections::hash_map::Entry;
 use std::collections::{HashMap, HashSet};
 use std::collections::btree_set::Intersection;
-use std::env;
 use std::fmt::{Display, Formatter};
 use std::fs::{File, read};
-use std::io::{BufRead, BufReader};
+use std::io::BufRead;
 use std::ptr::addr_of;
+use utils::get_file_reader;
 
 fn main() -> std::io::Result<()> {
-    let curr_dir = env::current_dir()?.display().to_string();
-    let path_to_input = format!("{}/src/assets/input.txt", curr_dir);
-
-    let file = File::open(path_to_input)?;
-    let reader = BufReader::new(file);
+    let reader = get_file_reader("src/assets/input.txt");
 
     const REQUIRED_BADGE_COUNT: i32 = 3;
 

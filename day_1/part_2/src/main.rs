@@ -1,13 +1,8 @@
-use std::{env};
-use std::fs::File;
-use std::io::{BufRead, BufReader};
+use std::io::BufRead;
+use utils::get_file_reader;
 
 fn main() -> std::io::Result<()> {
-    let curr_dir = env::current_dir()?.display().to_string();
-    let path_to_input = format!("{}/src/assets/input.txt", curr_dir);
-
-    let file = File::open(path_to_input)?;
-    let reader = BufReader::new(file);
+    let reader = get_file_reader("src/assets/input.txt");
 
     let mut calories_for_current_elf: i32 = 0;
     let mut top_three_elf_calorie_counts: [i32; 3] = [0; 3];
