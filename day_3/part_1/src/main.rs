@@ -20,14 +20,6 @@ fn main() -> std::io::Result<()> {
         let compartment_one = &curr_line[..index_of_middle_of_string];
         let compartment_two = &curr_line[index_of_middle_of_string..];
 
-        println!("{}", &curr_line);
-        println!("{} | {}", &compartment_one, &compartment_two);
-        println!("-----");
-
-        // if &curr_line.len() % 2 != 0 {
-        //     println!("unequal length: {}", &curr_line.len())
-        // }
-
         let mut map: HashMap<char, Compartment> = HashMap::new();
 
         for item in compartment_one.chars() {
@@ -38,30 +30,18 @@ fn main() -> std::io::Result<()> {
         }
 
         for item in compartment_two.chars() {
-            // now check for duplicates that exist
-            // in both compartments
-            let another = &item;
+            // now check for duplicates that
+            // may exist in both compartments
             if map.contains_key(&item) && map.get(&item) != Some(&Compartment::TWO) {
+                // duplicate item in rucksack found
                 // update running sum of priority
                 sum_of_all_priorities += calculate_priority_from_char(item);
-                // duplicate item in rucksack found
-                // so we can stop computation
+                // we can stop computation
                 break;
             } else {
                 map.insert(item, Compartment::TWO);
             }
         }
-
-
-        // println!("current_line: {}", &curr_line);
-        // println!("compartment_one: {}", compartment_one);
-        // println!("compartment_two: {}", compartment_two);
-        // println!("-----");
-
-        // 7501
-        // 60284
-
-
     }
 
     println!("Sum of all priorities: {}", sum_of_all_priorities);
@@ -76,23 +56,11 @@ fn calculate_priority_from_char(c: char) -> i32 {
     let mut priority_for_char: i32 = 0;
 
     if c.is_ascii_lowercase() {
-        // println!("lowercase");
-        // println!("char: {}", c);
-        // println!("char as num: {}", (c as i32) - LOWERCASE_OFFSET);
-        // println!("---");
         priority_for_char = (c as i32) - LOWERCASE_OFFSET;
-        // println!("Priority: {}", priority_for_char);
-        println!("priority_for_char '{}': {}", &c, &priority_for_char);
         return priority_for_char
     }
 
-    // println!("uppercase");
-    // println!("char: {}", c);
-    // println!("char as num: {}", (c as i32) - UPPERCASE_OFFSET);
-    // println!("---");
     priority_for_char = (c as i32) - UPPERCASE_OFFSET;
-
-    println!("priority_for_char '{}': {}", &c, &priority_for_char);
     priority_for_char
 }
 

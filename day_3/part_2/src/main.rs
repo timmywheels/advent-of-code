@@ -14,11 +14,9 @@ fn main() -> std::io::Result<()> {
     let file = File::open(path_to_input)?;
     let reader = BufReader::new(file);
 
-    let mut sum_of_all_badge_priorities = 0;
-
-    const DEFAULT_BADGE_COUNT: i32 = 1;
     const REQUIRED_BADGE_COUNT: i32 = 3;
 
+    let mut sum_of_all_badge_priorities = 0;
     let mut line_count = 1;
 
     let mut elf_one_set: HashSet<char> = HashSet::new();
@@ -38,25 +36,30 @@ fn main() -> std::io::Result<()> {
         }
 
         // update line count accordingly
-        if line_count == 3 {
+        if line_count == REQUIRED_BADGE_COUNT {
 
-            // it does not matter the permutation we use to determine the intersection
-            // as long as we check all three of the sets in some way
-            let intersection_of_one_and_two = elf_one_set.intersection(&elf_two_set).collect::<Vec<&char>>();
-            let intersection_of_two_and_three = elf_two_set.intersection(&elf_three_set).collect::<Vec<&char>>();
+            // check for intersections of items between the three elves
+            let intersection_of_elves_one_and_two = elf_one_set.intersection(&elf_two_set).collect::<Vec<&char>>();
+            let intersection_of_elves_two_and_three = elf_two_set.intersection(&elf_three_set).collect::<Vec<&char>>();
 
-            let intersect_one = HashSet::<&char>::from_iter(intersection_of_one_and_two.clone());
-            let intersect_two = HashSet::<&char>::from_iter(intersection_of_two_and_three.clone());
+            // now work on determining if there's any intersecting values from the intersections above
+            let set_of_intersecting_values_from_elves_one_and_two = HashSet::<&char>::from_iter(intersection_of_elves_one_and_two.clone());
+            let set_of_intersecting_values_from_elves_two_and_three = HashSet::<&char>::from_iter(intersection_of_elves_two_and_three.clone());
 
+            // based on the constraints
             // there should only be one intersection for each group of three elves
-            let intersection_of_intersections: &&char = intersect_one.intersection(&intersect_two).nth(0).unwrap();
+            // (if any at all) so extract index 0
+            let intersection_of_elves_one_two_and_three: &&char = set_of_intersecting_values_from_elves_one_and_two.intersection(&set_of_intersecting_values_from_elves_two_and_three).nth(0).unwrap();
 
-            if intersection_of_intersections.is_ascii() {
-                // calculate priority for the intersection value
-                sum_of_all_badge_priorities += calculate_priority_from_char(**intersection_of_intersections);
+
+            if intersection_of_elves_one_two_and_three.is_ascii() {
+                // calculate the badge priority for the value that intersects across all three elves
+                // and add it to the running sum
+                sum_of_all_badge_priorities += calculate_priority_from_char(**intersection_of_elves_one_two_and_three);
             }
 
-            // reset
+            // reset values
+            // for the next sequence of three elves
             line_count = 1;
             elf_one_set = HashSet::new();
             elf_two_set = HashSet::new();
@@ -64,7 +67,6 @@ fn main() -> std::io::Result<()> {
         } else {
             line_count += 1;
         }
-
     }
 
     println!("Sum of all priorities: {}", sum_of_all_badge_priorities);
